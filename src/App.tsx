@@ -10,6 +10,9 @@ import AddChild from "./pages/AddChild";
 import SelectChild from "./pages/SelectChild";
 import Menu from "./pages/Menu";
 import Sounds from "./pages/Sounds";
+import Writing from "./pages/Writing";
+import Progress from "./pages/Progress";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +31,9 @@ const App = () => (
             <Route path="/select-child" element={<SelectChild />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/sounds" element={<Sounds />} />
+            <Route path="/writing" element={<Writing />} />
+            <Route path="/progress" element={<Progress />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
