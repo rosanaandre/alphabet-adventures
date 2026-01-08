@@ -1,11 +1,32 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Index = () => {
+  const navigate = useNavigate();
+  const { user, loading, children } = useAuth();
+
+  useEffect(() => {
+    if (!loading) {
+      if (user) {
+        if (children.length > 0) {
+          navigate('/select-child');
+        } else {
+          navigate('/add-child');
+        }
+      } else {
+        navigate('/auth');
+      }
+    }
+  }, [user, loading, children, navigate]);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
+    <div className="min-h-screen bg-sky-gradient flex items-center justify-center">
       <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+        <h1 className="text-5xl font-fredoka font-bold text-rainbow mb-4 animate-pulse">
+          ABC Kids
+        </h1>
+        <p className="text-muted-foreground">Carregando...</p>
       </div>
     </div>
   );
