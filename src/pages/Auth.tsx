@@ -67,7 +67,7 @@ export const AuthPage: React.FC = () => {
           className="text-center mb-8"
         >
           <h1 className="text-4xl font-fredoka font-bold text-rainbow mb-2">
-            ABC Kids
+            AlphaPlay
           </h1>
           <p className="text-muted-foreground">
             {mode === 'login' ? 'Acesse sua conta' : 'Crie sua conta'}
