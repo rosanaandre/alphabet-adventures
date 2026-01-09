@@ -24,7 +24,7 @@ const Index = () => {
     <div className="min-h-screen bg-sky-gradient flex items-center justify-center">
       <div className="text-center">
         <h1 className="text-5xl font-fredoka font-bold text-rainbow mb-4 animate-pulse">
-          ABC Kids
+          AlphaPlay
         </h1>
         <p className="text-muted-foreground">Carregando...</p>
       </div>
