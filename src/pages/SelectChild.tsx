@@ -33,7 +33,7 @@ export const SelectChildPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-sky-gradient">
-      <NavHeader title="ABC Kids" showBack={false} />
+      <NavHeader title="AlphaPlay" showBack={false} />
 
       <div className="container max-w-2xl mx-auto p-6">
         <motion.div
