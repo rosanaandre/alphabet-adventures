@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Volume2, Pencil, BarChart3, Sparkles } from 'lucide-react';
+import { Volume2, Pencil, Sparkles } from 'lucide-react';
 import { NavHeader } from '@/components/layout/NavHeader';
 import { ChildAvatar } from '@/components/ui/ChildAvatar';
 import { useAuth } from '@/contexts/AuthContext';
@@ -24,15 +24,6 @@ const menuItems = [
     path: '/writing',
     gradient: 'from-fun-green to-primary',
     iconBg: 'bg-fun-green/20',
-  },
-  {
-    id: 'progress',
-    title: 'Meu Progresso',
-    description: 'Veja o que você aprendeu',
-    icon: BarChart3,
-    path: '/progress',
-    gradient: 'from-fun-purple to-primary',
-    iconBg: 'bg-fun-purple/20',
   },
 ];
 

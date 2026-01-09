@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LogOut, Users, Key, Trash2, ChevronRight } from 'lucide-react';
+import { LogOut, Users, Key, Trash2, ChevronRight, BarChart3, ChevronDown } from 'lucide-react';
 import { NavHeader } from '@/components/layout/NavHeader';
 import { FunButton } from '@/components/ui/FunButton';
 import { ChildAvatar } from '@/components/ui/ChildAvatar';
 import { PinInput } from '@/components/ui/PinInput';
+import { ProgressView } from '@/components/ProgressView';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -15,6 +16,8 @@ export const SettingsPage: React.FC = () => {
   const { guardian, children, signOut, refreshChildren } = useAuth();
   const [showChangePinModal, setShowChangePinModal] = useState(false);
   const [newPin, setNewPin] = useState('');
+  const [showProgressSection, setShowProgressSection] = useState(false);
+  const [selectedProgressChild, setSelectedProgressChild] = useState<string | null>(null);
 
   const handleSignOut = async () => {
     try {
@@ -62,11 +65,23 @@ export const SettingsPage: React.FC = () => {
       if (error) throw error;
       
       await refreshChildren();
+      if (selectedProgressChild === childId) {
+        setSelectedProgressChild(null);
+      }
       toast.success(`${childName} foi removido(a)`);
     } catch (error) {
       toast.error('Erro ao remover criança');
     }
   };
+
+  const handleToggleProgress = () => {
+    setShowProgressSection(!showProgressSection);
+    if (!showProgressSection && children.length > 0 && !selectedProgressChild) {
+      setSelectedProgressChild(children[0].id);
+    }
+  };
+
+  const selectedChild = children.find(c => c.id === selectedProgressChild);
 
   return (
     <div className="min-h-screen bg-sky-gradient">
@@ -92,6 +107,76 @@ export const SettingsPage: React.FC = () => {
               <p className="text-muted-foreground">{guardian?.email}</p>
             </div>
           </div>
+        </motion.div>
+
+        {/* Progress Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="bg-card rounded-3xl p-6 shadow-card mb-6"
+        >
+          <button
+            onClick={handleToggleProgress}
+            className="w-full flex items-center justify-between"
+          >
+            <h2 className="text-lg font-bold flex items-center gap-2">
+              <BarChart3 className="w-5 h-5 text-primary" />
+              Progresso das Crianças
+            </h2>
+            <ChevronDown 
+              className={`w-5 h-5 text-muted-foreground transition-transform ${showProgressSection ? 'rotate-180' : ''}`} 
+            />
+          </button>
+
+          {showProgressSection && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="mt-4"
+            >
+              {children.length === 0 ? (
+                <p className="text-muted-foreground text-center py-4">
+                  Nenhuma criança cadastrada
+                </p>
+              ) : (
+                <>
+                  {/* Child Selector */}
+                  {children.length > 1 && (
+                    <div className="mb-4">
+                      <p className="text-sm text-muted-foreground mb-2">Selecione a criança:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {children.map((child) => (
+                          <button
+                            key={child.id}
+                            onClick={() => setSelectedProgressChild(child.id)}
+                            className={`flex items-center gap-2 px-3 py-2 rounded-full transition-all ${
+                              selectedProgressChild === child.id
+                                ? 'bg-primary text-primary-foreground'
+                                : 'bg-muted/50 hover:bg-muted'
+                            }`}
+                          >
+                            <ChildAvatar
+                              name={child.name}
+                              color={child.avatar_color}
+                              size="sm"
+                            />
+                            <span className="text-sm font-medium">{child.name}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Progress View */}
+                  {selectedChild && (
+                    <ProgressView child={selectedChild} />
+                  )}
+                </>
+              )}
+            </motion.div>
+          )}
         </motion.div>
 
         {/* Children */}
